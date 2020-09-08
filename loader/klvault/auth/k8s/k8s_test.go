@@ -243,7 +243,7 @@ func TestToken(t *testing.T) {
 
 			var logicalClient = mocks.NewMockLogicalClient(ctrl)
 			logicalClient.EXPECT().Write(
-				loginPath,
+				"/auth/approle_mountpath",
 				map[string]interface{}{
 					"jwt":  "123",
 					"role": "role",
@@ -257,6 +257,7 @@ func TestToken(t *testing.T) {
 
 			var k = &VaultAuth{
 				k8sToken:      "123",
+				loginPath:     "/auth/approle_mountpath",
 				role:          "role",
 				logicalClient: logicalClient,
 			}
@@ -276,7 +277,7 @@ func TestToken(t *testing.T) {
 
 			var logicalClient = mocks.NewMockLogicalClient(ctrl)
 			logicalClient.EXPECT().Write(
-				loginPath,
+				"/auth/approle_mountpath",
 				map[string]interface{}{
 					"jwt":  "123",
 					"role": "role",
@@ -288,6 +289,7 @@ func TestToken(t *testing.T) {
 
 			var k = &VaultAuth{
 				k8sToken:      "123",
+				loginPath:     "/auth/approle_mountpath",
 				role:          "role",
 				logicalClient: logicalClient,
 			}

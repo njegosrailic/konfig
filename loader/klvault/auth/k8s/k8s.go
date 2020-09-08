@@ -18,7 +18,6 @@ import (
 var _ klvault.AuthProvider = (*VaultAuth)(nil)
 
 const (
-	loginPath                 = "/auth/kubernetes/login"
 	k8sTokenKeyNamespace      = "kubernetes.io/serviceaccount/namespace"
 	k8sTokenKeyServiceAccount = "kubernetes.io/serviceaccount/service-account.name"
 )
@@ -34,6 +33,7 @@ var (
 type VaultAuth struct {
 	cfg           *Config
 	k8sToken      string
+	loginPath     string `default:"/auth/kubernetes/login"`
 	role          string
 	logicalClient klvault.LogicalClient
 }
@@ -101,7 +101,7 @@ func New(cfg *Config) *VaultAuth {
 // {"jwt": "'"$KUBE_TOKEN"'", "role": "{{ SERVICE_ACCOUNT_NAME }}"}
 func (k *VaultAuth) Token() (string, time.Duration, error) {
 	var s, err = k.logicalClient.Write(
-		loginPath,
+		k.loginPath,
 		map[string]interface{}{
 			"jwt":  k.k8sToken,
 			"role": k.role,
